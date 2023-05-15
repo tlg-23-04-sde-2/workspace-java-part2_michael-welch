@@ -66,8 +66,8 @@ class InMemoryCatalogTest {
     private static void testGetAll() {
         InMemoryCatalog catalog = new InMemoryCatalog();
 
-        Collection<MusicItem> items = catalog.getAll();
-        dump(items);
+        Collection<MusicItem> allItems = catalog.getAll();
+        dump(allItems);
     }
 
 
