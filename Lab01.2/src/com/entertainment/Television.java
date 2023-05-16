@@ -2,7 +2,7 @@ package com.entertainment;
 
 import java.util.Objects;
 
-public class Television {
+public class Television implements Comparable<Television> {
     // fields
     private String brand;
     private int volume;
@@ -41,6 +41,22 @@ public class Television {
 
     public void setVolume(int volume) {
         this.volume = volume;
+    }
+
+    /*
+     * Natural order is defined by brand (String), then by volume (int).
+     * To be "consistent with equals," we must use the same properites
+     * for natural order that we use for equals() and hashCode(),
+     * or your TreeSet may behave strangely
+     */
+    @Override
+    // sort key here is brand(String)
+    public int compareTo(Television other) {
+        int result = this.getBrand().compareTo(other.getBrand());
+        if (result == 0) {      // if tied on brand, break the tie by volume
+            result = Integer.compare(this.getVolume(),other.getVolume());
+        }
+        return result;
     }
 
     @Override
