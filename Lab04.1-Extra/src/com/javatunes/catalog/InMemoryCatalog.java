@@ -120,7 +120,11 @@ public class InMemoryCatalog implements Catalog {
     public Collection<MusicItem> getSelfTitled() {
         // return value
         Collection<MusicItem> result = new ArrayList<>();
-
+        for (MusicItem item : catalogData) {
+            if(item.getTitle().equals(item.getArtist())){
+                result.add(item);
+            }
+        }
         return result;
     }
 
@@ -128,10 +132,15 @@ public class InMemoryCatalog implements Catalog {
     /**
      * TASK: find all "rock" items whose price is less than or equal to the specified price.
      */
-    public Collection<MusicItem> findCheapRock(double maxPrice) {
+    public Collection<MusicItem> findCheapRock(double maxPrice) {       // include CLASSIC_ROCK and ROCK
         Collection<MusicItem> result = new ArrayList<>();
-
-
+        for (MusicItem item : catalogData) {
+            if(item.getMusicCategory().equals(MusicCategory.ROCK) ||
+                    item.getMusicCategory().equals(MusicCategory.CLASSIC_ROCK) &&
+                            item.getPrice() <= maxPrice){
+                result.add(item);
+            }
+        }
         return result;
     }
 
