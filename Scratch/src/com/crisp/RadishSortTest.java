@@ -1,6 +1,7 @@
 package com.crisp;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 class RadishSortTest {
@@ -11,20 +12,43 @@ class RadishSortTest {
         radishes.add(new Radish("red", 0.75, 3.1, 7));
         radishes.add(new Radish("white", 1.0, 1.0, 2));
 
-        radishes.sort(null);    // passing null means natural order
         System.out.println("Natural order (size)");
+        radishes.sort(null);    // passing null means natural order
         dump(radishes);
         System.out.println();
 
         radishes.sort(new RadishColorComparator());
         System.out.println("Sorted by color");
         dump(radishes);
+        System.out.println();
 
-    }
+        // anonymous Class that implements Comparator so we don't have to build a new Comparator
+        System.out.println("Sort by tailLength, via anonymous Comparator");
+        radishes.sort(new Comparator<Radish>(){
+            @Override
+            public int compare(Radish r1, Radish r2) {
+                return Double.compare(r1.getTailLength(),r2.getTailLength());
+            }
+        } );
+        dump(radishes);
+        System.out.println();
+
+        System.out.println("Sort by guys on top, via anonymous Comparator");
+        radishes.sort(new Comparator<Radish>() {
+            @Override
+            public int compare(Radish r1, Radish r2) {
+                return Integer.compare(r1.getGreenThingies(), r2.getGreenThingies());
+            }
+
+        });
+        dump(radishes);
+        System.out.println();
+    }   // end of main
+
 
     private static void dump(List<Radish> radishList) {
         for (Radish radish : radishList) {
             System.out.println(radish);
         }
     }
-}
+}   // end of RadishSortTest Class
