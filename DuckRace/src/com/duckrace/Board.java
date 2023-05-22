@@ -39,9 +39,10 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-class Board {
+public class Board {
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
+    public int studentIdSize = studentIdMap.size();
 
     /*
      * Updates the board (racerMap) by making a DuckRacer "win."
@@ -51,6 +52,7 @@ class Board {
      */
     public void update(int id, Reward reward) {
         DuckRacer racer = null;
+
         if (racerMap.containsKey(id)){      // id exists in racerMap, so get DuckRacer next to it
             racer = racerMap.get(id);
         }
@@ -62,22 +64,30 @@ class Board {
     }
 
     // FOR TESTING PURPOSES
-    // TODO: render this data "pretty," for display to the end user
     // see Java part 1, Session 5 for fixed width for text fields
     // show the DuckRacers (only), ie., the right side of the map
-    void show() {
-        Collection<DuckRacer> racers = racerMap.values();
+    public void show() {
+        // if racerMap is empty, print "currently no results to show"
+        // otherwise, show the data (as we are doing below)
 
-        System.out.println("Duck Race Results");
-        System.out.println("=================\n");
-
-        System.out.println("id         name     wins     rewards");
-        System.out.println("__         ____     ____     _______");
-
-        for (DuckRacer racer : racers) {
-            System.out.printf("%2s    %10s     %2s     %s \n",
-                    racer.getId(), racer.getName(),racer.getWins(),racer.getRewards());
+        if (racerMap.isEmpty()) {
+            System.out.println("There are currently no results to show. \n");
         }
+        else {
+            Collection<DuckRacer> racers = racerMap.values();
+
+            System.out.println("\nDuck Race Results");
+            System.out.println("=================\n");
+
+            System.out.println("id      name     wins     rewards");
+            System.out.println("__      ____     ____     _______");
+
+            for (DuckRacer racer : racers) {
+                System.out.printf("%2s %10s     %2s     %s \n",
+                        racer.getId(), racer.getName(),racer.getWins(),racer.getRewards());
+            }
+        }
+
     }
 
     private Map<Integer, String> loadStudentIdMap() {
