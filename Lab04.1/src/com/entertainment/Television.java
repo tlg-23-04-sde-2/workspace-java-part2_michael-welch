@@ -10,8 +10,7 @@ package com.entertainment;
 
 import java.util.Objects;
 
-public class Television
-        implements Comparable<Television> {
+public class Television implements Comparable<Television> {
     public static final int MIN_VOLUME = 0;
     public static final int MAX_VOLUME = 100;
     public static final int MIN_CHANNEL = 1;
