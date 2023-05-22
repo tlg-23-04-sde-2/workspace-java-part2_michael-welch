@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /*
  * Application "controller."
- * Sets up the system classes, orchestrates the overall flow of the application.
+ * Sets up the system objects, orchestrates the overall flow of the application.
  * Prompts user for inputs and "forwards" those inputs into the system (back end).
  */
 public class DuckRaceApp {
