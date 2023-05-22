@@ -72,16 +72,19 @@ public class Television implements Comparable<Television> {
     @Override
     public boolean equals(Object obj) {
         boolean result = false;     // start the result as false
-        // only proceed if 'obj' is a reference to another Television object
-        if (obj instanceof Television) {
+
+        // only proceed if 'obj' is the same type
+        if (this.getClass() == obj.getClass()) {
             // downcast 'obj' reference to a Television type, so we can call Television methods
             Television other = (Television) obj;
+
             // do the checks: business equality is defined if brand and volume are the same
             result = Objects.equals(this.getBrand(),other.getBrand()) &&        // Objects.equals() is a null-safe check
                     this.getVolume() == other.getVolume();
         }
         return result;
     }
+
 
     @Override
     public String toString() {
