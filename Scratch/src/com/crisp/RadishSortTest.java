@@ -33,16 +33,18 @@ class RadishSortTest {
         dump(radishes);
         System.out.println();
 
-        System.out.println("Sort by guys on top, via anonymous Comparator");
-        radishes.sort(new Comparator<Radish>() {
-            @Override
-            public int compare(Radish r1, Radish r2) {
-                return Integer.compare(r1.getGreenThingies(), r2.getGreenThingies());
-            }
+        System.out.println("Sort by guys on top, via lambda");
+        // sort takes a 'Comparator'
+        // 'Comparator' is a functional interface
+        // anywhere you can pass a functional interface, you can use a Lambda
+        // r1 and r2 are coming IN as a Comparator  // the right side is the line of code you'd do in the Comparator class
+        radishes.sort( (r1, r2) -> Integer.compare(r1.getGreenThingies(), r2.getGreenThingies()) );     // don't have to say return
 
-        });
         dump(radishes);
         System.out.println();
+
+
+
     }   // end of main
 
 
