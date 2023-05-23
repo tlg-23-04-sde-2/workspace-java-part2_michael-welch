@@ -1,6 +1,6 @@
 package com.duckrace;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLOutput;
@@ -39,10 +39,43 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-public class Board {
+public class Board implements Serializable {
+    // class-level common area (static)
+    private static final String dataFilePath = "data/board.dat";
+    private static final String studentIdFilePath = "conf/student-ids.csv";
+    /*
+     * If data/board.dat exists, read the Board object from that binary file,
+     * otherwise create new and return it
+     * This uses Java's built-in Object Serialization facility.
+     */
+
+
+    public static Board getInstance() {
+        Board board = null;
+
+        if (Files.exists(Path.of(dataFilePath))) {
+            // use try/catch/finally to open the file and be able to close it at the end
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(dataFilePath))) {
+                board = (Board) in.readObject();        // readObject returns object, will need to downcast
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            board = new Board();
+        }
+        return board;
+    }
+
+    // instance variables, present in each board object
+    // all of this has to be Serializable in order to use Serializable
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
-    public int studentIdSize = studentIdMap.size();
+
+    // constructors - this one is private, to prevent outside instantiation
+    private Board() {
+    }
 
     /*
      * Updates the board (racerMap) by making a DuckRacer "win."
@@ -61,6 +94,7 @@ public class Board {
             racerMap.put(id,racer);
         }
         racer.win(reward);
+        save();
     }
 
     // FOR TESTING PURPOSES
@@ -89,13 +123,24 @@ public class Board {
         }
 
     }
+    /*
+     * Saves the state of this Board object to binary file "data/board.dat".
+     */
+    private void save() {
+        try(ObjectOutputStream out = new ObjectOutputStream((new FileOutputStream(dataFilePath)))) {
+            out.writeObject(this);      // write "me" (a Board object) to the binary file
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private Map<Integer, String> loadStudentIdMap() {
         Map<Integer,String> idMap = new HashMap<>();
 
         // read all lines from conf/student-ids.csv
         try {
-            List<String> lines = Files.readAllLines(Path.of("conf/student-ids.csv"));
+            List<String> lines = Files.readAllLines(Path.of(studentIdFilePath));
 
             // for each line (String) in the file, split it into "tokens"
             // convert the tokens as necessary and put each pair in 'idMap'

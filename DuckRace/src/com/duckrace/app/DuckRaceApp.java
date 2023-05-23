@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class DuckRaceApp {
     // instance variables
     private final Scanner scanner = new Scanner(System.in);     // read inputs from console
-    private final Board board = new Board();
+    private final Board board = Board.getInstance();
 
     public void execute(){
         welcome();
