@@ -7,40 +7,44 @@
  */
 package com.javatunes.thread;
 
-// DONE: extend the Thread class
-public class MessagePrinter extends Thread {
-  private String message;
-  private int interval = 500;  // default value
-  
-  public MessagePrinter(String message) {
-    this.message = message;
-    // DONE: set the thread name [important when debugging]
-    setName("Message Printer");
-  }
-  
-  public MessagePrinter(String message, int interval) {
-    this(message);
-    this.interval = interval;
-  }
-  
-  /**
-   * DONE: implement run() as follows:
-   * It should loop 10 times, printing the 'message' field to stdout,
-   * then pausing for some interval (in millis) that you choose.
-   * 
-   * Use a try/catch to call Thread.sleep(interval) for the pause.
-   * The sleep() method throws InterruptedException, which you need to catch.
-   * You can either leave the catch block empty, or print the exception to stdout.
-   */
-  @Override
-  public void run() {
-    for (int i = 0; i < 10; i++) {
-      System.out.println(getName() + ": " + message);
-      try {
-        Thread.sleep(interval);
-      }
-      catch (InterruptedException ignored) {
-      }
+// extend the Thread class
+public class MessagePrinter implements Runnable {
+    private static final String threadNamePrefix = "message-printer-";
+    private static int id = 0;
+
+    private String message;
+    private int count = 10;
+    private long interval;
+
+    public MessagePrinter(String message) {
+        this.message = message;
     }
-  }
+
+    public MessagePrinter(String message, int count, long interval) {
+        this.message = message;
+        this.count = count;
+        this.interval = interval;
+        //setName(threadNamePrefix + ++id);
+    }
+
+    /**
+     * It should loop 10 times, printing the 'message' field to stdout,
+     * then pausing for some interval (in millis) that you choose.
+     * <p>
+     * Use a try/catch to call Thread.sleep(interval) for the pause.
+     * The sleep() method throws InterruptedException, which you need to catch.
+     * You can either leave the catch block empty, or print the exception to stdout.
+     */
+    @Override
+    public void run() {
+        for (int i = 0; i < count; i++) {
+            System.out.println(Thread.currentThread().getName() + ": " + message);
+
+            try {
+                Thread.sleep(interval);     // pause for interval time
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
